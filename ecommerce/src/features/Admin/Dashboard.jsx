@@ -24,7 +24,7 @@ const Dashboard = () => {
           </ul>
         </Offcanvas.Body>
       </Offcanvas> */}
-      <Row>
+      {/* <Row>
         <Col xs={3}>
         <Navbar bg="dark" variant="dark" expand="lg" className="flex-column">
       <Navbar.Brand href="#home">Admin Dashboard</Navbar.Brand>
@@ -59,9 +59,9 @@ const Dashboard = () => {
         <Col xs={9}>
               <Outlet/>
         </Col>
-      </Row>
+      </Row> */}
      
-      
+      <h1>Admin Dashboard</h1>
     </>
     
 

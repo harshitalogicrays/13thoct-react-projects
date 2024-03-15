@@ -11,15 +11,18 @@ import Register from './features/Register.jsx'
 import Login from './features/Login.jsx'
 import Products from './features/Products.jsx'
 import PageNotFound from './features/PageNotFound.jsx'
+import Dashboard from './features/Admin/Dashboard.jsx'
+import { DefaultDashboard } from './features/HiddenLinks.jsx'
 
 const router = createBrowserRouter([
   {
     path:'/',element:<App/>,
     children:[
-      {path:'',element:<Home/>},
+      {path:'',element:<DefaultDashboard> <Home/></DefaultDashboard>},
       {path:'register',element:<Register/>},
       {path:'login',element:<Login  />},
-      {path:'products', element:<Products/>},
+      {path:'products', element:<DefaultDashboard><Products/></DefaultDashboard>},
+      {path:'admin',element:<Dashboard/>},
       {path:'*', element:<PageNotFound/>}
     ]
   }

@@ -4,7 +4,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import Loader from './Loader'
 import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth'
-import { auth } from '../firebase/config'
+import { auth, db } from '../firebase/config'
+import { Timestamp, doc, getDoc, setDoc } from 'firebase/firestore'
 const Login = () => {
   let [user,setUser]=useState({email:'',password:''})
   let [errors,setErrors]=useState({})
@@ -29,11 +30,26 @@ const Login = () => {
           setErrors({})
           setIsLoading(true)
           signInWithEmailAndPassword(auth, user.email, user.password)
-          .then((userCredential) => {
+          .then(async(userCredential) => {
               const user1 = userCredential.user;
+              try{
+                const docRef=doc(db,"users",user1.uid)
+                const docSnap=await getDoc(docRef)
+                let role=docSnap.data().role
+                if(role=="admin"){
+                    navigate('/admin')
+                }
+                else if(role=="user"){
+                    navigate('/')
+                }
                 toast.success("loggedIn Successfully")
-                navigate('/')
+              
                 setIsLoading(false)
+              }
+              catch(error){
+                toast.error(error.message)
+              }
+                
           })
           .catch((error) => {
                 setIsLoading(false)
@@ -47,10 +63,20 @@ const Login = () => {
   const provider = new GoogleAuthProvider();
   let loginwithgoogle=()=>{
     signInWithPopup(auth, provider)
-    .then((result) => {
+    .then(async(result) => {
           const user = result.user;
-          toast.success("loggedIn Successfully")
-          navigate('/')
+          try{
+            const docRef=doc(db,"users",user.uid)
+            await setDoc(docRef,{username:user.displayName,email:user.email,role:"user", createdAt:Timestamp.now().toMillis()})
+            toast.success("loggedIn Successfully")
+            navigate('/')
+            setIsLoading(false)
+        }
+        catch(error){
+            setIsLoading(false)
+            toast.error(error.message)
+        }
+        
     }).catch((error) => {
         toast.error(error.message)
     });

@@ -7,25 +7,45 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Protected, ProtectedAdmin, ShowOnLogin, ShowOnLogout } from './HiddenLinks';
 import { NavDropdown } from 'react-bootstrap';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { auth, db } from '../firebase/config';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginuser, logoutuser, selectUserName, selectUserRole } from '../redux/authSlice';
+import { doc, getDoc } from 'firebase/firestore';
 const Header = () => {
+  const role=useSelector(selectUserRole)
+  const username=useSelector(selectUserName)
   const navigate=useNavigate()
-  let handleLogout=()=>{
-    sessionStorage.removeItem("auth")
-    toast.success("LogggedOut Successfully")
-    navigate('/')
-  }
-  let [username,setUsername]=useState('')
-  let [role,setRole]=useState('')
-  let [isLoggedIn,setIsLoggedIn]=useState(false)
+  const dispatch=useDispatch() 
   useEffect(()=>{
-      if(sessionStorage.getItem("auth") !=null){
-        let obj=JSON.parse(sessionStorage.getItem("auth"))
-        setUsername(obj.name)
-        setRole(obj.role)
-        setIsLoggedIn(obj.isLoggedIn)
+    onAuthStateChanged(auth, async(user) => {
+      if (user) {
+          const uid = user.uid;
+          try{
+            const docRef=doc(db,"users",uid)
+            const docSnap=await getDoc(docRef)
+            let obj={userEmail:docSnap.data().email,userName:docSnap.data().username,userRole:docSnap.data().role,userId:uid}
+            dispatch(loginuser(obj))
+          }
+          catch(error){console.log(error.message)}
+         
+      
+      } else {
+        dispatch(logoutuser())
       }
-      else { setUsername('');setRole('');setIsLoggedIn(false) }
-  },[ sessionStorage.getItem("auth")])
+    });
+  },[auth])
+
+
+  let handleLogout=()=>{
+    signOut(auth).then(() => {
+      toast.success("LogggedOut Successfully")
+      navigate('/')
+    }).catch((error) => {
+     toast.error(error.message)
+    });
+   
+  }
   return (
     <Navbar bg="dark" data-bs-theme="dark">
     <Container fluid>
@@ -40,17 +60,17 @@ const Header = () => {
       :
       <Nav.Link as={Link} to='/products'><FaListOl/> Products</Nav.Link> 
   }
-         
+
       </Nav>
       <Nav>
+      <Nav.Link as={Link} to='/cart'><FaShoppingCart size={30}/>
+      <span class="badge rounded-pill text-bg-danger">0</span>       </Nav.Link>      
         <ShowOnLogout>
             <Nav.Link as={Link} to='/login'><FaLock/> Login</Nav.Link>
             <Nav.Link as={Link} to='/register'><FaPenAlt/> Register</Nav.Link>
         </ShowOnLogout>
-        <ShowOnLogin>
-           <Nav.Link as={Link} to='/cart'><FaShoppingCart size={30}/>
-            <span class="badge rounded-pill text-bg-danger">0</span>          
-           </Nav.Link>
+        <ShowOnLogin>  
+            <Nav.Link as={Link} to='/'>My Orders</Nav.Link>
             <Nav.Link as={Link} to='/'>Welcome {username}</Nav.Link>
             <Nav.Link onClick={handleLogout}><FaArrowAltCircleLeft/> Logout</Nav.Link>
         </ShowOnLogin>

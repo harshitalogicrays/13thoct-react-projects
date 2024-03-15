@@ -11,10 +11,10 @@ function App() {
         hideProgressBar newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss={false}
         draggable pauseOnHover={false} theme="colored"
         />
-    <Header/>
-      <Container className="mt-5">
+    {/* <Header/> */}
+      {/* <Container className="mt-5"> */}
           <Outlet/>
-      </Container>
+      {/* </Container> */}
     </>
   )
 }

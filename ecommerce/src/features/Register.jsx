@@ -4,7 +4,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import Loader from './Loader'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
-import { auth } from '../firebase/config'
+import { auth, db } from '../firebase/config'
+import { Timestamp, doc, setDoc } from 'firebase/firestore'
 
 const Register = () => {
     let [user,setUser]=useState({username:'',email:'',password:'',cpassword:'',role:'user'})
@@ -34,11 +35,21 @@ const Register = () => {
             setErrors({})
             setIsLoading(true)     
             createUserWithEmailAndPassword(auth, user.email, user.password)
-                .then((userCredential) => {
-                    const user = userCredential.user;
-                    toast.success("Registered Successfully")
-                    navigate('/')
-                    setIsLoading(false)
+                .then(async(userCredential) => {
+                    const user1 = userCredential.user;
+                    try{
+                        const docRef=doc(db,"users",user1.uid)
+                        await setDoc(docRef,{...user, createdAt:Timestamp.now().toMillis()})
+                        toast.success("Registered Successfully")
+                        navigate('/')
+                        setIsLoading(false)
+
+                    }
+                    catch(error){
+                        setIsLoading(false)
+                        toast.error(error.message)
+                    }
+                   
                 })
                 .catch((error) => {
                     setIsLoading(false)
