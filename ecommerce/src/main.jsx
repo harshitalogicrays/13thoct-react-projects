@@ -12,7 +12,11 @@ import Login from './features/Login.jsx'
 import Products from './features/Products.jsx'
 import PageNotFound from './features/PageNotFound.jsx'
 import Dashboard from './features/Admin/Dashboard.jsx'
-import { DefaultDashboard } from './features/HiddenLinks.jsx'
+import { AdminDashboard, DefaultDashboard } from './features/HiddenLinks.jsx'
+import AddProduct from './features/Admin/AddProduct.jsx'
+import ViewProducts from './features/Admin/ViewProducts.jsx'
+import AddSlider from './features/Admin/AddSlider.jsx'
+import ViewSlider from './features/Admin/ViewSlider.jsx'
 
 const router = createBrowserRouter([
   {
@@ -22,7 +26,15 @@ const router = createBrowserRouter([
       {path:'register',element:<Register/>},
       {path:'login',element:<Login  />},
       {path:'products', element:<DefaultDashboard><Products/></DefaultDashboard>},
-      {path:'admin',element:<Dashboard/>},
+      {path:'admin',element:<AdminDashboard><Dashboard/></AdminDashboard>,
+        children:[
+          {path:'', element:<Dashboard/>},
+          {path:'addproduct', element:<AddProduct/>},
+          {path:'viewproducts', element:<ViewProducts/>},
+          {path:'addslider', element:<AddSlider/>},
+          {path:'viewsliders', element:<ViewSlider/>},
+          {path:'editslider/:id', element:<AddSlider/>},
+        ]},
       {path:'*', element:<PageNotFound/>}
     ]
   }

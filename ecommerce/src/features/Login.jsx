@@ -82,7 +82,7 @@ const Login = () => {
     });
   }
   return (
-    <Container>
+    <Container className='mt-5'>
        
         {isLoading &&  <Loader/>}
     <Row className='shadow p-3'>

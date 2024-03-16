@@ -5,7 +5,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import {FaArrowAltCircleLeft, FaHome, FaListOl, FaLock, FaPenAlt, FaShoppingCart} from 'react-icons/fa'
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { Protected, ProtectedAdmin, ShowOnLogin, ShowOnLogout } from './HiddenLinks';
+import { Logout, Protected, ProtectedAdmin, ShowOnLogin, ShowOnLogout } from './HiddenLinks';
 import { NavDropdown } from 'react-bootstrap';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth, db } from '../firebase/config';
@@ -37,30 +37,14 @@ const Header = () => {
   },[auth])
 
 
-  let handleLogout=()=>{
-    signOut(auth).then(() => {
-      toast.success("LogggedOut Successfully")
-      navigate('/')
-    }).catch((error) => {
-     toast.error(error.message)
-    });
-   
-  }
+ 
   return (
     <Navbar bg="dark" data-bs-theme="dark">
     <Container fluid>
-      <Navbar.Brand href="#home">miniproject</Navbar.Brand>
+      <Navbar.Brand href="#home">main-project</Navbar.Brand>
       <Nav className="me-auto">
         <Nav.Link as={Link} to='/'><FaHome/> Home</Nav.Link>
-        {role=="admin" ?
-         <NavDropdown title="Products" id="basic-nav-dropdown">
-         <NavDropdown.Item as={Link} to='/admin/add'>Add</NavDropdown.Item> <NavDropdown.Divider />
-         <NavDropdown.Item as={Link} to='/admin/view'> View </NavDropdown.Item>
-             </NavDropdown>
-      :
-      <Nav.Link as={Link} to='/products'><FaListOl/> Products</Nav.Link> 
-  }
-
+       <Nav.Link as={Link} to='/products'><FaListOl/> Products</Nav.Link> 
       </Nav>
       <Nav>
       <Nav.Link as={Link} to='/cart'><FaShoppingCart size={30}/>
@@ -72,7 +56,7 @@ const Header = () => {
         <ShowOnLogin>  
             <Nav.Link as={Link} to='/'>My Orders</Nav.Link>
             <Nav.Link as={Link} to='/'>Welcome {username}</Nav.Link>
-            <Nav.Link onClick={handleLogout}><FaArrowAltCircleLeft/> Logout</Nav.Link>
+            <Nav.Link><Logout></Logout></Nav.Link>
         </ShowOnLogin>
       </Nav>
     </Container>
