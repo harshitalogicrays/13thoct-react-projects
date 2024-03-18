@@ -3,17 +3,21 @@ import { toast } from 'react-toastify'
 import { Button, Container, Table } from 'react-bootstrap'
 import { FaPenAlt, FaTrashAlt } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
+import useFetchCollection from '../../customhook/useFetchCollection'
+import { useDispatch, useSelector } from 'react-redux'
+import { selectproducts, store_products } from '../../redux/productSlice'
 
 const ViewProducts = () => {
-    let [products,setProducts]=useState([])
-    useEffect(()=>{
-        getData()
-    },[])
-    let getData=async()=>{
-       
-    }
+  let {data}=useFetchCollection("products")
+   const dispatch=useDispatch()
 
-    let handleDelete=async(id)=>{
+   useEffect(()=>{
+    dispatch(store_products(data))
+   },[data])
+  
+   let products=useSelector(selectproducts)
+
+  let handleDelete=async(id)=>{
         if(window.confirm("are you sure to delete this??")){
           
         }
@@ -41,13 +45,13 @@ const ViewProducts = () => {
             <td>{product.id}</td>
             <td>{product.category}</td>
             <td>{product.name}</td>
-            <td><img src={product.image} height={50} width={50}/></td>
+            <td><img src={product.image[0]} height={50} width={50}/></td>
             <td>{product.brand}</td>
             <td>{product.price}</td>
             <td>{product.stock}</td>
             <td>
-                <Button as={Link}  to={`/admin/edit/${product.id}`}  variant='success' className="me-2"><FaPenAlt/></Button>
-                <Button variant='danger' onClick={()=>handleDelete(product.id)}><FaTrashAlt/></Button>
+                <Button as={Link}  to={`/admin/editproduct/${product.id}`}  variant='success' className="me-2"><FaPenAlt/></Button>
+                <Button variant='danger' onClick={()=>handleDelete(product.id,product.image)}><FaTrashAlt/></Button>
             </td>
             </tr>
         )}

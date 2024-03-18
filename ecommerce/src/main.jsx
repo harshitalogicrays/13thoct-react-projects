@@ -30,6 +30,7 @@ const router = createBrowserRouter([
         children:[
           {path:'', element:<Dashboard/>},
           {path:'addproduct', element:<AddProduct/>},
+          {path:'editproduct/:id', element:<AddProduct/>},
           {path:'viewproducts', element:<ViewProducts/>},
           {path:'addslider', element:<AddSlider/>},
           {path:'viewsliders', element:<ViewSlider/>},

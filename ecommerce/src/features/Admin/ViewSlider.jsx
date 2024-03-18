@@ -10,7 +10,7 @@ import { db, storage } from '../../firebase/config'
 import { deleteDoc, doc } from 'firebase/firestore'
 import { toast } from 'react-toastify'
 const ViewSlider = () => {
-  const {data,isLoading}=useFetchCollection('sliders')
+  const {data}=useFetchCollection('sliders')
   const dispatch=useDispatch()
   useEffect(()=>{
     dispatch(store_sliders(data))
