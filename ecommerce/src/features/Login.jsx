@@ -6,11 +6,24 @@ import Loader from './Loader'
 import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth'
 import { auth, db } from '../firebase/config'
 import { Timestamp, doc, getDoc, setDoc } from 'firebase/firestore'
+import { useSelector } from 'react-redux'
+import { selectURL } from '../redux/cartSlice'
 const Login = () => {
+    const navigate=useNavigate()
+    let previousURL=useSelector(selectURL)
+    let redirectURL=()=>{
+        if(previousURL.includes('cart')){
+                navigate('/cart')
+        }
+        else {
+            navigate('/')
+        }
+    }
+
   let [user,setUser]=useState({email:'',password:''})
   let [errors,setErrors]=useState({})
   let [isLoading,setIsLoading]=useState(false)
-  const navigate=useNavigate()
+
   let validations=(user)=>{
       let formerrors={}
       let emailpattern=/^([\w\d_\!\@\#\$|%\&\*\-\+\.]+)\@([\w\d_]+)\.([a-zA-Z]{3})$/
@@ -40,7 +53,7 @@ const Login = () => {
                     navigate('/admin')
                 }
                 else if(role=="user"){
-                    navigate('/')
+                    redirectURL()
                 }
                 toast.success("loggedIn Successfully")
               
@@ -69,7 +82,7 @@ const Login = () => {
             const docRef=doc(db,"users",user.uid)
             await setDoc(docRef,{username:user.displayName,email:user.email,role:"user", createdAt:Timestamp.now().toMillis()})
             toast.success("loggedIn Successfully")
-            navigate('/')
+            redirectURL()
             setIsLoading(false)
         }
         catch(error){

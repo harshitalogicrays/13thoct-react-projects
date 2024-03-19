@@ -8,9 +8,10 @@ import { db, storage } from '../../firebase/config'
 import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
 import { useSelector } from 'react-redux'
 import { selectproducts } from '../../redux/productSlice'
+import useFetchCollection from '../../customhook/useFetchCollection'
 
 const AddProduct = () => {  
-    let categories=["Grocery","Electronics","Cloths","Jewellary"]
+    let {data:categories}=useFetchCollection("categories")
     let initialState={category:'',name:'',brand:'',price:'',stock:'',image:'',desc:''}
     let [product,setProduct]=useState({...initialState})
     let [uploadProgress,setUploadProgress]=useState(0) 
@@ -94,7 +95,7 @@ const AddProduct = () => {
                 <Form.Select name="category" value={product.category} 
                 onChange={(e)=>setProduct({...product,category:e.target.value})}>
                 <option value='' selected disabled>choose one</option>
-                {categories.map((c,i)=><option key={i}>{c}</option>)}
+                {categories.map((c,i)=><option key={i}>{c.title}</option>)}
                 </Form.Select>
             </Form.Group>
             <Row>

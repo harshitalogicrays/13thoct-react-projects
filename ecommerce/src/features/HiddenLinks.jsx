@@ -56,6 +56,10 @@ export const AdminDashboard=()=>{
           <Nav.Item>
             <Nav.Link href="#home">Home</Nav.Link>
           </Nav.Item>
+          <NavDropdown title="Category" id="basic-nav-dropdown">
+         <NavDropdown.Item as={Link} to='/admin/addcategory'>Add</NavDropdown.Item> <NavDropdown.Divider />
+         <NavDropdown.Item as={Link} to='/admin/viewcategories'> View </NavDropdown.Item>
+             </NavDropdown>
           <NavDropdown title="Slider" id="basic-nav-dropdown">
          <NavDropdown.Item as={Link} to='/admin/addslider'>Add</NavDropdown.Item> <NavDropdown.Divider />
          <NavDropdown.Item as={Link} to='/admin/viewslider'> View </NavDropdown.Item>

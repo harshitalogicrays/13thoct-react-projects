@@ -12,7 +12,9 @@ import { auth, db } from '../firebase/config';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginuser, logoutuser, selectUserName, selectUserRole } from '../redux/authSlice';
 import { doc, getDoc } from 'firebase/firestore';
+import { selectcartItems } from '../redux/cartSlice';
 const Header = () => {
+  const cartItems=useSelector(selectcartItems)
   const role=useSelector(selectUserRole)
   const username=useSelector(selectUserName)
   const navigate=useNavigate()
@@ -48,7 +50,7 @@ const Header = () => {
       </Nav>
       <Nav>
       <Nav.Link as={Link} to='/cart'><FaShoppingCart size={30}/>
-      <span class="badge rounded-pill text-bg-danger">0</span>       </Nav.Link>      
+      <span class="badge rounded-pill text-bg-danger">{cartItems.length}</span> </Nav.Link>      
         <ShowOnLogout>
             <Nav.Link as={Link} to='/login'><FaLock/> Login</Nav.Link>
             <Nav.Link as={Link} to='/register'><FaPenAlt/> Register</Nav.Link>

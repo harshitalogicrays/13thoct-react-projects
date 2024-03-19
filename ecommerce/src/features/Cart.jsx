@@ -1,14 +1,33 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { Col, Container, Row, Table } from 'react-bootstrap'
-import { DataContext } from './Context'
 import {FaTrash} from 'react-icons/fa'
+import { useDispatch, useSelector } from 'react-redux'
+import { ADD_TO_CART, CALCULATE_TOTAL, DECREASE, EMPTy_CART, REMOVE_FROM_CART, SAVE_URL, selectTotalAmount, selectcartItems } from '../redux/cartSlice'
+import { selectIsLoggedIn } from '../redux/authSlice'
+import { useNavigate } from 'react-router-dom'
 const Cart = () => {
-  const data=useContext(DataContext)
-  let {cart,total,calculate_total,increase,decrease,remove_from_Cart,empty_cart}=data
+  const cart=useSelector(selectcartItems)
+  const total=useSelector(selectTotalAmount)
+  const isLoggedIn=useSelector(selectIsLoggedIn)
+  const dispatch=useDispatch()
+  const navigate=useNavigate()
   useEffect(()=>{
-    calculate_total()
+    dispatch(CALCULATE_TOTAL())
   },[cart])
-  return (
+
+
+  let url=window.location.href
+  let handleCheckout=()=>{
+    if(isLoggedIn){
+      navigate('/checkout-details')
+    }
+    else {
+      dispatch(SAVE_URL(url))
+      navigate('/login')
+    }
+   
+  }
+   return (
     <Container className="mt-5 shadow p-3">
     <h1>My Cart</h1>
     <Table striped bordered hover>
@@ -32,13 +51,13 @@ const Cart = () => {
             <td><img src={item.image} width={50} height={50}/></td>
             <td>{item.price}</td>
             <td>
-              <button type="button" onClick={()=>decrease(item)}>-</button>
-              <input type="text" style={{width:'40px',textAlign:'center'}} value={item.qty} readOnly/>
-              <button type="button"  onClick={()=>increase(item)}>+</button>
+              <button type="button" onClick={()=>dispatch(DECREASE(item))}>-</button>
+              <input type="text" style={{width:'40px',textAlign:'center'}} value={item.cartQuantity} readOnly/>
+              <button type="button"  onClick={()=>dispatch(ADD_TO_CART(item))}>+</button>
               </td>
-            <td>{item.price * item.qty}</td>
+            <td>{item.price * item.cartQuantity}</td>
             <td>
-              <button type="button"  class="btn btn-danger"  onClick={()=>remove_from_Cart(item)}>
+              <button type="button"  class="btn btn-danger"  onClick={()=>dispatch(REMOVE_FROM_CART(item))}>
                 <FaTrash/>
               </button>
               
@@ -49,14 +68,14 @@ const Cart = () => {
 </Table>
 <Row>
   <Col xs={9}>
-  <button type="button"  class="btn btn-danger btn-lg" onClick={()=>empty_cart()} >
+  <button type="button"  class="btn btn-danger btn-lg" onClick={()=>dispatch(EMPTy_CART())}>
                 <FaTrash/>Empty Cart
               </button>
   </Col>
   <Col xs={3}>
           <h4>Total: <span className='float-end'>${total}</span></h4><hr/>
           <div class="d-grid gap-2">
-            <button type="button" class="btn btn-primary"  >
+            <button type="button" class="btn btn-primary"  onClick={handleCheckout}>
               Checkout
             </button>
           </div>

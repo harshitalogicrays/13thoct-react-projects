@@ -1,17 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import ProductList from './ProductList'
+import useFetchCollection from '../customhook/useFetchCollection'
+import { useDispatch, useSelector } from 'react-redux'
+import { selectproducts, store_products } from '../redux/productSlice'
+import { Container } from 'react-bootstrap'
 
 const Products = () => {
-  let [products,setProducts]=useState([])
+  const {data}=useFetchCollection("products")
+  const dispatch=useDispatch()
   useEffect(()=>{
-      getData()
-  },[])
-  let getData=async()=>{
-     
-  }
+    dispatch(store_products(data))
+  },[data])
+
+  const products=useSelector(selectproducts)
   return (
     <>
+   
       <ProductList products={products}/>
+  
     </>
   )
 }

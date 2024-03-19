@@ -3,9 +3,12 @@ import { toast } from 'react-toastify'
 import { Button, Container, Table } from 'react-bootstrap'
 import { FaPenAlt, FaTrashAlt } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
-import useFetchCollection from '../../customhook/useFetchCollection'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectproducts, store_products } from '../../redux/productSlice'
+import { deleteObject, ref } from 'firebase/storage'
+import { db, storage } from '../../firebase/config'
+import { deleteDoc, doc } from 'firebase/firestore'
+import useFetchCollection from '../../customhook/useFetchCollection'
 
 const ViewProducts = () => {
   let {data}=useFetchCollection("products")
@@ -17,9 +20,11 @@ const ViewProducts = () => {
   
    let products=useSelector(selectproducts)
 
-  let handleDelete=async(id)=>{
+  let handleDelete=async(id,image)=>{
         if(window.confirm("are you sure to delete this??")){
-          
+          image.forEach(img=>deleteObject(ref(storage,img)))         
+          deleteDoc(doc(db,'products',id))
+          toast.success("product deleted") 
         }
     }
   return (

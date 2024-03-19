@@ -17,6 +17,10 @@ import AddProduct from './features/Admin/AddProduct.jsx'
 import ViewProducts from './features/Admin/ViewProducts.jsx'
 import AddSlider from './features/Admin/AddSlider.jsx'
 import ViewSlider from './features/Admin/ViewSlider.jsx'
+import AddCategory from './features/Admin/AddCategory.jsx'
+import ViewCategories from './features/Admin/ViewCategories.jsx'
+import Cart from './features/Cart.jsx'
+import ProductDetails from './features/ProductDetails.jsx'
 
 const router = createBrowserRouter([
   {
@@ -26,6 +30,8 @@ const router = createBrowserRouter([
       {path:'register',element:<Register/>},
       {path:'login',element:<Login  />},
       {path:'products', element:<DefaultDashboard><Products/></DefaultDashboard>},
+      {path:'product-details/:id', element:<DefaultDashboard><ProductDetails/></DefaultDashboard>},
+      {path:'cart',element:<DefaultDashboard><Cart/></DefaultDashboard>},
       {path:'admin',element:<AdminDashboard><Dashboard/></AdminDashboard>,
         children:[
           {path:'', element:<Dashboard/>},
@@ -35,6 +41,9 @@ const router = createBrowserRouter([
           {path:'addslider', element:<AddSlider/>},
           {path:'viewsliders', element:<ViewSlider/>},
           {path:'editslider/:id', element:<AddSlider/>},
+          {path:'addcategory', element:<AddCategory/>},
+          {path:'editcategory/:id', element:<AddCategory/>},
+          {path:'viewcategories', element:<ViewCategories/>},
         ]},
       {path:'*', element:<PageNotFound/>}
     ]
