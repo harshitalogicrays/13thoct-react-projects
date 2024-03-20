@@ -1,11 +1,30 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import ProductItem from './ProductItem'
 import { Card, Col, Container, Form, Row } from 'react-bootstrap'
 import Loader from './Loader'
 import useFetchCollection from '../customhook/useFetchCollection'
-
+import ReactPaginate from 'react-paginate'
 const ProductList = ({products}) => {
   const {data:categories}=useFetchCollection("categories")
+
+  const itemsPerPage=1
+  const [itemOffset, setItemOffset] = useState(0);
+  const [currentItems,setCurrentItems]=useState([])
+  const [pageCount,setPageCount]=useState(0)
+
+  useEffect(()=>{
+    const endOffset = itemOffset + itemsPerPage;
+    setCurrentItems(products.slice(itemOffset, endOffset))
+    setPageCount(Math.ceil(products.length / itemsPerPage))
+  },[itemOffset,currentItems,products])
+
+  const handlePageClick = (event) => {
+    const newOffset = (event.selected * itemsPerPage) % products.length;
+      setItemOffset(newOffset);
+  };
+
+
+
   return (
     <Container fluid>
       <Row className='mt-5'>
@@ -25,7 +44,25 @@ const ProductList = ({products}) => {
         <Col xs={10}>
         {products.length==0 && <h1>No Product Found</h1>}
         <Row>
-        {products.map((product)=><ProductItem key={product.id} product={product}/>)}
+        {currentItems.map((product)=><ProductItem key={product.id} product={product}/>)}
+      
+        <ReactPaginate
+        breakLabel="..."
+        nextLabel="next >"
+        onPageChange={handlePageClick}
+        pageRangeDisplayed={5}
+        pageCount={pageCount}
+        previousLabel="< previous"
+        renderOnZeroPageCount={null}
+        containerClassName="pagination"
+        activeLinkClassName="page-item active"
+        pageLinkClassName="page-link"
+        pageClassName="page-item"
+        nextClassName="page-item"
+        nextLinkClassName="page-link"
+        previousClassName="page-item"
+        previousLinkClassName="page-link"
+      />
         </Row>
 
         </Col>

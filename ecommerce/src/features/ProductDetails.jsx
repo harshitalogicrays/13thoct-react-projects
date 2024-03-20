@@ -4,13 +4,15 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { selectproducts } from '../redux/productSlice'
 import { ADD_TO_CART, DECREASE, selectcartItems } from '../redux/cartSlice'
+import ImageThumbnail from './ImageThumbnail'
 
 const ProductDetails = () => {
     const {id}=useParams()
     const dispatch=useDispatch()
     const allproducts=useSelector(selectproducts)
     const product=allproducts.find(item=>item.id==id)
-    
+    // const similarproducts=allproducts.filter(item=>item.category==product.category)
+
     const cartItems=useSelector(selectcartItems)
     const itemIndex=cartItems.findIndex(item=>item.id==id)
     const item=cartItems.find(item=>item.id==id)
@@ -18,7 +20,8 @@ const ProductDetails = () => {
     <Container className='mt-5 shadow col-8 p-2'>
         <Row>
             <Col xs={6}>
-                <Image src={product.image[0]} className='img-fluid'/>
+                {/* <Image src={product.image[0]} className='img-fluid'/> */}
+                <ImageThumbnail images={product.image}/>
             </Col>
             <Col xs={6}>
                 <>
