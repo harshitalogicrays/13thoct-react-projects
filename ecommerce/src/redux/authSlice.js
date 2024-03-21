@@ -29,4 +29,4 @@ export const selectIsLoggedIn=state=>state.auth.isLoggedIn
 export const selectUserEmail=state=>state.auth.userEmail
 export const selectUserName=state=>state.auth.userName
 export const selectUserRole=state=>state.auth.userRole
-export const selectIserId=state=>state.auth.userId
+export const selectUserId=state=>state.auth.userId

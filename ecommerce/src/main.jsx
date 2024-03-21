@@ -21,6 +21,8 @@ import AddCategory from './features/Admin/AddCategory.jsx'
 import ViewCategories from './features/Admin/ViewCategories.jsx'
 import Cart from './features/Cart.jsx'
 import ProductDetails from './features/ProductDetails.jsx'
+import CheckoutDetails from './features/CheckoutDetails.jsx'
+import Checkout from './features/Checkout.jsx'
 
 const router = createBrowserRouter([
   {
@@ -32,6 +34,8 @@ const router = createBrowserRouter([
       {path:'products', element:<DefaultDashboard><Products/></DefaultDashboard>},
       {path:'product-details/:id', element:<DefaultDashboard><ProductDetails/></DefaultDashboard>},
       {path:'cart',element:<DefaultDashboard><Cart/></DefaultDashboard>},
+      {path:'checkout-details',element:<DefaultDashboard><CheckoutDetails/></DefaultDashboard>},
+      {path:'checkout',element:<DefaultDashboard><Checkout/></DefaultDashboard>},
       {path:'admin',element:<AdminDashboard><Dashboard/></AdminDashboard>,
         children:[
           {path:'', element:<Dashboard/>},

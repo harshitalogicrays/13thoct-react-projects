@@ -2,11 +2,15 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const filterSlice=createSlice({
     name:"filter",
-    initialState:{filterProducts:[],searchvalue:''},
+    initialState:{filterProducts:[],searchvalue:'',categoryname:''},
     reducers:{
         FILTER_BY_SEARCH(state,action){
             let {products,search}=action.payload
-            
+            if(search !=''){
+                let filters=products.filter(item=>item.name.includes(search) || item.category==search)
+                state.filterProducts=filters
+            }
+            state.searchvalue=search
         },
         FILTER_BY_CATEGORY(state,action){},
         FILTER_BY_PRICE(state,action){}

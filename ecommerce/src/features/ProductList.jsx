@@ -7,7 +7,7 @@ import ReactPaginate from 'react-paginate'
 const ProductList = ({products}) => {
   const {data:categories}=useFetchCollection("categories")
 
-  const itemsPerPage=1
+  const itemsPerPage=2
   const [itemOffset, setItemOffset] = useState(0);
   const [currentItems,setCurrentItems]=useState([])
   const [pageCount,setPageCount]=useState(0)

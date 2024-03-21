@@ -43,10 +43,14 @@ const Header = () => {
 
   let [search,setSearch]=useState('')
   const {data:products}=useFetchCollection("products")
-  let handleSearch=(e)=>{
-    e.preventDefault()
-      dispatch(FILTER_BY_SEARCH({products,search}))
-  }
+  // let handleSearch=(e)=>{
+  //   e.preventDefault()
+  //     dispatch(FILTER_BY_SEARCH({products,search}))
+  // }
+
+  useEffect(()=>{
+    dispatch(FILTER_BY_SEARCH({products,search}))
+  },[search])
  
   return (
     <Navbar bg="dark" data-bs-theme="dark">
@@ -59,9 +63,9 @@ const Header = () => {
       <Nav>
       <Form inline>
       <InputGroup>
-          <Form.Control placeholder="serach by name" value={search} onChange={(e)=>setSearch(e.target.value)}
+          <Form.Control placeholder="search by name" value={search} onChange={(e)=>setSearch(e.target.value)}
           />
-          <Button type="button" variant='danger' onClick={handleSearch}><FaSearch/></Button>
+          {/* <Button type="button" variant='danger' onClick={handleSearch}><FaSearch/></Button> */}
         </InputGroup>
      
       </Form>

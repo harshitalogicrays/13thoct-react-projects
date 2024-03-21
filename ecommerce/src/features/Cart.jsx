@@ -75,7 +75,9 @@ const Cart = () => {
   <Col xs={3}>
           <h4>Total: <span className='float-end'>${total}</span></h4><hr/>
           <div class="d-grid gap-2">
-            <button type="button" class="btn btn-primary"  onClick={handleCheckout}>
+            <button type="button" class="btn btn-primary"  onClick={handleCheckout}
+            disabled={cart.length==0 && "disabled"}
+            >
               Checkout
             </button>
           </div>
