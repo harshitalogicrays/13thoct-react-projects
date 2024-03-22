@@ -23,6 +23,10 @@ import Cart from './features/Cart.jsx'
 import ProductDetails from './features/ProductDetails.jsx'
 import CheckoutDetails from './features/CheckoutDetails.jsx'
 import Checkout from './features/Checkout.jsx'
+import MyOrders from './features/MyOrders.jsx'
+import MyOrderDetails from './features/MyOrderDetails.jsx'
+import Order from './features/Admin/Order.jsx'
+import OrderDetails from './features/Admin/OrderDetails.jsx'
 
 const router = createBrowserRouter([
   {
@@ -36,6 +40,8 @@ const router = createBrowserRouter([
       {path:'cart',element:<DefaultDashboard><Cart/></DefaultDashboard>},
       {path:'checkout-details',element:<DefaultDashboard><CheckoutDetails/></DefaultDashboard>},
       {path:'checkout',element:<DefaultDashboard><Checkout/></DefaultDashboard>},
+      {path:'myorders',element:<DefaultDashboard><MyOrders/></DefaultDashboard>},
+      {path:'myorders/details/:id',element:<DefaultDashboard><MyOrderDetails/></DefaultDashboard>},
       {path:'admin',element:<AdminDashboard><Dashboard/></AdminDashboard>,
         children:[
           {path:'', element:<Dashboard/>},
@@ -48,6 +54,8 @@ const router = createBrowserRouter([
           {path:'addcategory', element:<AddCategory/>},
           {path:'editcategory/:id', element:<AddCategory/>},
           {path:'viewcategories', element:<ViewCategories/>},
+          {path:'orders',element:<Order/>},
+          {path:'orders/details/:id', element:<OrderDetails/>}
         ]},
       {path:'*', element:<PageNotFound/>}
     ]

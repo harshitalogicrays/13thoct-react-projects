@@ -14,6 +14,8 @@ import { selectShippingAddress } from "../redux/checkoutSlice";
 import { Timestamp, addDoc, collection } from "firebase/firestore";
 import { db } from "../firebase/config";
 import { useNavigate } from "react-router-dom";
+import emailjs from '@emailjs/browser';
+
 
 export default function CheckoutForm() {
   const stripe = useStripe();
@@ -69,9 +71,17 @@ export default function CheckoutForm() {
         try{
             const docRef=collection(db,"orders")
             await addDoc(docRef,orderConfig)
-            toast.success("order placed")
-            dispatch(EMPTy_CART())
-            navigate('/')
+
+            emailjs.send('service_a8dsm3m', 'template_wwrc5ya', 
+            {user_email:userEmail,order_status:orderConfig.orderStatus,amount:totalAmount}, {
+              publicKey: 'ouyyULNr1Fl9QYxiJ',
+            })
+            .then( () => {
+              toast.success("order placed")
+              dispatch(EMPTy_CART())
+              navigate('/')
+              },(error) => { toast.error(error.text)  },
+            );         
         }
         catch(error){
             toast.error(error.message)

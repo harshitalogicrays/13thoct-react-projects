@@ -68,6 +68,7 @@ export const AdminDashboard=()=>{
          <NavDropdown.Item as={Link} to='/admin/addproduct'>Add</NavDropdown.Item> <NavDropdown.Divider />
          <NavDropdown.Item as={Link} to='/admin/viewproducts'> View </NavDropdown.Item>
              </NavDropdown>
+             <Nav.Link as={Link} to='/admin/orders'>Orders</Nav.Link>
             </Nav>
             <Nav>
           <Nav.Item>
